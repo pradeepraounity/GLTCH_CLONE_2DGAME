@@ -20,7 +20,6 @@ public class LevelGrid
     public void Setup(GltchPlayer gltchPlayer)
     {
         this.gltchPlayer = gltchPlayer;
-
         SpawnFood();
     }
 
@@ -32,7 +31,7 @@ public class LevelGrid
         } while (gltchPlayer.GetGridPosition() == foodGridPosition);
 
         foodGameObject = new GameObject("Food", typeof(SpriteRenderer));
-        foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.i.foodSprite;
+        foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.i.pointSprite;
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
     }
 
@@ -56,18 +55,31 @@ public class LevelGrid
         {
             gridPosition.x = width - 1;
         }
-        if (gridPosition.x > width - 1)
-        {
-            gridPosition.x = 0;
-        }
         if (gridPosition.y < 0)
         {
             gridPosition.y = height - 1;
         }
+
+        if (gridPosition.x > width - 1)
+        {
+            gridPosition.x = 0;
+        }
+
         if (gridPosition.y > height - 1)
         {
             gridPosition.y = 0;
         }
+
         return gridPosition;
+    }
+
+    public int GetGridWidth()
+    {
+        return width;
+    }
+
+    public int GetGridHeight()
+    {
+        return height;
     }
 }

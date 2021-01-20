@@ -7,16 +7,25 @@ public class GridLineSprites : MonoBehaviour
 {
 	[SerializeField]
 	private int rows, cols;
-
 	public float tileSize = 1f;
 
 
-	private void Awake()
+	private LevelGrid levelGrid;
+
+	public void Setup(LevelGrid levelGrid)
 	{
+		this.levelGrid = levelGrid;
+	}
+
+    private void Start()
+    {
+		rows = levelGrid.GetGridHeight();
+		cols = levelGrid.GetGridWidth();
+
 		Generate();
 	}
 
-	private void Generate()
+    private void Generate()
 	{
 		GameObject referenceTiles = (GameObject)Instantiate(Resources.Load("BaseGridSprite"));
 

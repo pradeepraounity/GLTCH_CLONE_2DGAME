@@ -13,18 +13,16 @@ public class GltchPlayer : MonoBehaviour
     private Vector2Int gridMoveDirection;
     [SerializeField]
     private Vector2 gridPosition;
-    private Vector2 oldGridPosition;
+    [SerializeField]
+    private float _speedMovement = 2f;
 
-    private float gridMoveTimer;
-    private float gridMoveTimerMax;
     private LevelGrid levelGrid;
 
     private bool isMoving = false;
     private bool isDirPressed = false;
     private bool isReverseDir = false;
 
-    private int isLastDirY = 0;
-    private int isLastDirX = 0;
+    private int isLastDirY, isLastDirX = 0;
 
 
 
@@ -38,10 +36,6 @@ public class GltchPlayer : MonoBehaviour
         _GltchAnimation = GameObject.FindObjectOfType<GltchAnimation>();
 
         gridPosition = new Vector2Int(3, 6);
-        oldGridPosition = gridPosition;
-
-        gridMoveTimerMax = 0.1f;
-        gridMoveTimer = gridMoveTimerMax;
         gridMoveDirection = new Vector2Int(0, 1);
     }
 
@@ -53,7 +47,6 @@ public class GltchPlayer : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        OnTapClicked();
         HandleGridMovement();
     }
 
@@ -83,7 +76,6 @@ public class GltchPlayer : MonoBehaviour
         TouchSwipeDetector.onSwipeRight += OnSwipeRight;
         TouchSwipeDetector.onSwipeLeft += OnSwipeLeft;
         TouchSwipeDetector.onSwipeDown += OnSwipeDown;
-        TouchSwipeDetector.onTapClick += OnTapClicked;
     }
 
     private void OnDisable()
@@ -92,7 +84,6 @@ public class GltchPlayer : MonoBehaviour
         TouchSwipeDetector.onSwipeRight -= OnSwipeRight;
         TouchSwipeDetector.onSwipeLeft -= OnSwipeLeft;
         TouchSwipeDetector.onSwipeDown -= OnSwipeDown;
-        TouchSwipeDetector.onTapClick -= OnTapClicked;
     }
 
 
@@ -114,14 +105,6 @@ public class GltchPlayer : MonoBehaviour
     void OnSwipeRight()
     {
         RightMove();
-    }
-
-    void OnTapClicked()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            
-        }
     }
 
 
@@ -246,15 +229,37 @@ public class GltchPlayer : MonoBehaviour
             gridPosition += gridMoveDirection;
             gridPosition = levelGrid.ValidateGridPosition(gridPosition);
 
+            if ((isLastDirY == -1 && isLastDirX == 0) && gridPosition.y == (levelGrid.GetGridHeight() - 1))
+            {
+                transform.position = gridPosition;
+            }
+
+            if ((isLastDirX == -1 && isLastDirY == 0) && gridPosition.x == (levelGrid.GetGridWidth() - 1))
+            {
+                transform.position = gridPosition;
+            }
+
+            if ((isLastDirY == 1 && isLastDirX == 0) && transform.position.y == levelGrid.GetGridHeight()-1)
+            {
+                Debug.Log("hittt Y");
+                transform.position = gridPosition;
+            }
+
+            if ((isLastDirX == 1 && isLastDirY == 0) && transform.position.x == levelGrid.GetGridWidth() - 1)
+            {
+                Debug.Log("hittt Y");
+                transform.position = gridPosition;
+            }
+
             ChnageDir(gridMoveDirection);
         }
         else if(isDirPressed)
         {
-            transform.position = Vector2.MoveTowards(transform.position, gridPosition, 3f * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, gridPosition, _speedMovement * Time.deltaTime);
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, gridPosition, 2f * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, gridPosition, _speedMovement * Time.deltaTime);
         }
     }
 
