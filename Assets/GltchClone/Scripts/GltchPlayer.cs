@@ -25,11 +25,11 @@ public class GltchPlayer : MonoBehaviour
     private int isLastDirY, isLastDirX = 0;
 
 
-
     public void Setup(LevelGrid levelGrid)
     {
         this.levelGrid = levelGrid;
     }
+
 
     private void Awake()
     {
@@ -54,18 +54,22 @@ public class GltchPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+            SoundManager.onGameBgSoundPlay();
             UpMove();
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+            SoundManager.onGameBgSoundPlay();
             DownMove();
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            SoundManager.onGameBgSoundPlay();
             LeftMove();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            SoundManager.onGameBgSoundPlay();
             RightMove();
         }
     }
@@ -89,21 +93,25 @@ public class GltchPlayer : MonoBehaviour
 
     void OnSwipeUp()
     {
+        SoundManager.onGameBgSoundPlay();
         UpMove();
     }
 
     void OnSwipeDown()
     {
+        SoundManager.onGameBgSoundPlay();
         DownMove();
     }
 
     void OnSwipeLeft()
     {
+        SoundManager.onGameBgSoundPlay();
         LeftMove();
     }
 
     void OnSwipeRight()
     {
+        SoundManager.onGameBgSoundPlay();
         RightMove();
     }
 
@@ -252,14 +260,30 @@ public class GltchPlayer : MonoBehaviour
             }
 
             ChnageDir(gridMoveDirection);
+            CollectObsticle();
         }
         else if(isDirPressed)
         {
             transform.position = Vector2.MoveTowards(transform.position, gridPosition, _speedMovement * Time.deltaTime);
+
+            CollectObsticle();
         }
         else
         {
             transform.position = Vector2.MoveTowards(transform.position, gridPosition, _speedMovement * Time.deltaTime);
+
+            CollectObsticle();
+        }
+    }
+
+    void CollectObsticle()
+    {
+        Vector2Int gltchPlayerGridPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        bool isEated = levelGrid.TryGltchEatFood(gltchPlayerGridPosition);
+
+        if (isEated)
+        {
+            Debug.Log("Collectable");
         }
     }
 

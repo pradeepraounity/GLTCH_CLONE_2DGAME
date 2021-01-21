@@ -21,7 +21,6 @@ public class TouchSwipeDetector : MonoBehaviour
 
     private void Start()
     {
-        RegisterEvents();
     }
 
     void Update()
@@ -53,16 +52,6 @@ public class TouchSwipeDetector : MonoBehaviour
                 CheckSwipe();
             }
         }
-    }
-
-
-    void RegisterEvents()
-    {
-        onSwipeUp += OnSwipeUp;
-        onSwipeRight += OnSwipeRight;
-        onSwipeLeft += OnSwipeLeft;
-        onSwipeDown += OnSwipeDown;
-        onTapClick += OnTapCliecked;
     }
 
     void CheckSwipe()
@@ -110,31 +99,5 @@ public class TouchSwipeDetector : MonoBehaviour
     float HorizontalValMove()
     {
         return Mathf.Abs(fingerDown.x - fingerUp.x);
-    }
-
-
-    //////////////////////////////////CALLBACK FUNCTIONS/////////////////////////////
-    void OnSwipeUp()
-    {
-        Debug.Log("Swipe UP");
-    }
-
-    void OnSwipeDown()
-    {
-        Debug.Log("Swipe Down");
-    }
-
-    void OnSwipeLeft()
-    {
-        Debug.Log("Swipe Left");
-    }
-
-    void OnSwipeRight()
-    {
-        Debug.Log("Swipe Right");
-    }
-    void OnTapCliecked()
-    {
-        Debug.Log("Tap Clicked");
     }
 }

@@ -33,12 +33,14 @@ public class LevelGrid
         foodGameObject = new GameObject("Food", typeof(SpriteRenderer));
         foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.i.pointSprite;
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
+        foodGameObject.AddComponent<Obstacle>();
     }
 
     public bool TryGltchEatFood(Vector2Int gltchPlayerGridPosition)
     {
         if (gltchPlayerGridPosition == foodGridPosition)
         {
+            SoundManager.onCollectSoundPlay();
             Object.Destroy(foodGameObject);
             SpawnFood();
             return true;
